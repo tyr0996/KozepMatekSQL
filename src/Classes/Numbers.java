@@ -136,7 +136,7 @@ public abstract class Numbers {
         return back;
     }
 
-    private static ArrayList<ArrayList<Integer>> removeElementFromArarList(ArrayList<ArrayList<Integer>> ararList, ArrayList<Integer> vizsgalando){
+    private static void removeElementFromArarList(ArrayList<ArrayList<Integer>> ararList, ArrayList<Integer> vizsgalando){
 
         for (int j = 0; j < ararList.size(); j++) {
             ArrayList<Integer> actual = ararList.get(j);
@@ -149,7 +149,6 @@ public abstract class Numbers {
 
             ararList.set(j, backInteger);
         }
-        return ararList;
     }
 
 
