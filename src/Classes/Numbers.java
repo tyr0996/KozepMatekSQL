@@ -53,21 +53,12 @@ public abstract class Numbers {
         }
         while (ararList.size() != 0 && bigIndex != -1 && maxRun > -1) {
             System.out.println("bigIndex: " + bigIndex + ",   ararList.size():   " + ararList.size() + "ararList.get(bigIndex).size" + ararList.get(bigIndex).size());
-            Integer vizsgalando = ararList.get(bigIndex).get(0);
-            backArrayList.add(vizsgalando);
+            Integer vizsgalandoInteger = ararList.get(bigIndex).get(0);
+            ArrayList<Integer> vizsgalando = new ArrayList<>(1);
+            vizsgalando.add(vizsgalandoInteger);
+            backArrayList.add(vizsgalandoInteger);
 
-            //a vizsgálandó elem eltávolítása az eredetiből
-            for (int i = 0; i < ararList.size(); i++) {
-                ArrayList<Integer> actual = ararList.get(i);
-                ArrayList<Integer> backInteger = new ArrayList<>();
-                ArrayList<String> actualString = new ArrayList<>();
-
-                for (Integer integer : actual) actualString.add(integer.toString());
-                actualString.remove(vizsgalando.toString());
-                for (String str : actualString) backInteger.add(Integer.parseInt(str));
-
-                ararList.set(i, backInteger);
-            }
+            removeElementFromArarList(ararList, vizsgalando);
 
             maxRun = maxRun - 1;
 
@@ -124,17 +115,7 @@ public abstract class Numbers {
                 backList.add(i);
 
                 //Megadott elem eltávolítása
-                for (int j = 0; j < ararList.size(); j++) {
-                    ArrayList<Integer> actual = ararList.get(j);
-                    ArrayList<Integer> backInteger = new ArrayList<>();
-                    ArrayList<String> actualString = new ArrayList<>();
-
-                    for (Integer integer : actual) actualString.add(integer.toString());
-                    actualString.remove(vizsgalando.toString());
-                    for (String str : actualString) backInteger.add(Integer.parseInt(str));
-
-                    ararList.set(j, backInteger);
-                }
+                removeElementFromArarList(ararList, vizsgalando);
 
                 //annak ellenőrzése, hogy továbbra is benne van-e az összesben vagy sem, 
                 for (ArrayList<Integer> ar : ararList) {
@@ -153,6 +134,22 @@ public abstract class Numbers {
         }
 
         return back;
+    }
+
+    private static ArrayList<ArrayList<Integer>> removeElementFromArarList(ArrayList<ArrayList<Integer>> ararList, ArrayList<Integer> vizsgalando){
+
+        for (int j = 0; j < ararList.size(); j++) {
+            ArrayList<Integer> actual = ararList.get(j);
+            ArrayList<Integer> backInteger = new ArrayList<>();
+            ArrayList<String> actualString = new ArrayList<>();
+
+            for (Integer integer : actual) actualString.add(integer.toString());
+            actualString.remove(vizsgalando.toString());
+            for (String str : actualString) backInteger.add(Integer.parseInt(str));
+
+            ararList.set(j, backInteger);
+        }
+        return ararList;
     }
 
 
