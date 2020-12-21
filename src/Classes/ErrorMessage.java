@@ -3,15 +3,15 @@ package Classes;
 public class ErrorMessage {
     private final Integer errorCode;
 
-    public ErrorMessage(Integer errorCode, Language lang){
+    public ErrorMessage(Integer errorCode){
         this.errorCode = errorCode;
     }
     
-    public String getErrorMessage(Language lang){
+    public String getErrorMessage(){
         String back = this.errorCode.toString() + "  ";
         String errorMessage = "";
-        if(!Language.isSupported(lang)) return "Unsupported language code: " + lang;
-        switch(lang.getLang()){
+        if(!Language.isSupported(Language.currentLanguage)) return "Unsupported language code: " + Language.currentLanguage;
+        switch(Language.currentLanguage.getLang()){
             
             case "HUN" :
                 errorMessage = switch (this.errorCode) {
@@ -41,13 +41,17 @@ public class ErrorMessage {
         return back + errorMessage;
     }
     
-    
-    public static String getErrorMessage(Integer errorCode, Language lang){
-        ErrorMessage error = new ErrorMessage(errorCode, lang);
-        return error.getErrorMessage(lang);
+    public static String getErrorMessage(Integer errorCode){
+        ErrorMessage error = new ErrorMessage(errorCode);
+        return error.getErrorMessage();
     }
     
     public void print(){
-        System.err.println("[ ERRORMESSAGE ] : " + getErrorMessage(this.errorCode, Language.currentLanguage));
+        System.err.println("[ ERRORMESSAGE ] : " + this.getErrorMessage());
+    }
+
+    public static void print(Integer errorCode){
+        ErrorMessage error = new ErrorMessage(errorCode);
+        error.print();
     }
 }

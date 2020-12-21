@@ -47,9 +47,9 @@ public class Fraction extends Number {
      * Közös nevezőre hozza a törtet egy másik, paraméterként megadott törttel. Kiegészíthető lenne azzal, hogy olyan számlálójú törtet is össze lehessen hozni, amely tört
      * @param with Ezzel fogja azonos nevezőre hozni
      * @return Két Fraction-t tartalmazó osztállyal tér vissza
-     * @throws Fraction.ZeroDenominatorException
-     * @throws Fraction.NullDenominatorException
-     * @throws Fraction.NullNumeratorException
+     * @throws ZeroDenominatorException Akkor dobja ezt a hibát, ha valamelyik törtnek 0 van a nevezőjében
+     * @throws NullDenominatorException Akkor dobja ezt a hibát, ha hiányzik a tört nevezője
+     * @throws NullNumeratorException   Akkor dobja ezt a hibát, ha hiányzik a tört számlálója
      */
     public ArrayList<Fraction> toSameDenominator(Fraction with) throws ZeroDenominatorException, NullDenominatorException, NullNumeratorException {
         Fraction f1 = this;
@@ -61,12 +61,12 @@ public class Fraction extends Number {
         Integer newDenominator = Numbers.lkkt(newDenominators);
 
 //        Szükséges_szorzók_meghatározása
-        Integer multiplerA = with.denominator.intValue() / newDenominator;
-        Integer multiplerB = f1.denominator.intValue() / newDenominator;
+        int multiplerA = with.denominator.intValue() / newDenominator;
+        int multiplerB = f1.denominator.intValue() / newDenominator;
 
 
-        Integer a = f1.numerator.intValue() * multiplerA; //itt kellene valamit kitalálni ahhoz, hogy ne csak int-tel tudjak dolgozni
-        Integer b = with.numerator.intValue() * multiplerB;
+        int a = f1.numerator.intValue() * multiplerA; //TODO itt kellene valamit kitalálni ahhoz, hogy ne csak int-tel tudjak dolgozni
+        int b = with.numerator.intValue() * multiplerB;
 
         ArrayList<Fraction> back = new ArrayList<>(2);
         back.add(new Fraction(a, newDenominator));
@@ -88,11 +88,8 @@ public class Fraction extends Number {
      */
     public static ArrayList<Fraction> toSameDenominator(ArrayList<Fraction> theese) throws ZeroDenominatorException, NullDenominatorException, NullNumeratorException {
         ArrayList<Number> denominators = new ArrayList<>(theese.size());
-        ArrayList<Number> numerators = new ArrayList<>(theese.size());
-        for (Fraction f : theese) {
-            denominators.add(f.denominator);
-            numerators.add(f.numerator);
-        }
+        for (Fraction f : theese) denominators.add(f.denominator);
+
 
         //Abszolút közös nevező meghatározása
         Integer absoluteCommonDenominator = Numbers.lkkt(denominators);
@@ -100,7 +97,7 @@ public class Fraction extends Number {
         //Törtek létrehozása egyesével, majd bepakolása a back-be
         for (int i = 0; i < theese.size(); i++) {
             Fraction actual = theese.get(i);
-            Integer multipler = absoluteCommonDenominator / actual.denominator.intValue();
+            int multipler = absoluteCommonDenominator / actual.denominator.intValue();
             theese.add(i, new Fraction(actual.numerator.intValue() * multipler, absoluteCommonDenominator));
         }
         return theese;
@@ -109,8 +106,8 @@ public class Fraction extends Number {
     @Override
     public int intValue() {
         try {
-            Double doubleBack = this.numerator.doubleValue() / this.denominator.doubleValue();
-            return doubleBack.intValue();
+            double doubleBack = this.numerator.doubleValue() / this.denominator.doubleValue();
+            return ((int) doubleBack);
         } catch (NullPointerException e) {
             return Integer.MIN_VALUE;
         }
@@ -154,45 +151,30 @@ public class Fraction extends Number {
     }
 
     // kivételek létrehozása
-    public class ZeroDenominatorException extends Exception {
+    public static class ZeroDenominatorException extends Exception {
         public ZeroDenominatorException() {
-            ErrorMessage er = new ErrorMessage(1, Language.currentLanguage);
+            ErrorMessage er = new ErrorMessage(1);
             er.print();
-        }
-
-        @Override
-        public String toString() {
-            return this.getMessage();
         }
     }
 
-    public class NullNumeratorException extends Exception {
+    public static class NullNumeratorException extends Exception {
         public NullNumeratorException() {
-            ErrorMessage er = new ErrorMessage(2, Language.currentLanguage);
+            ErrorMessage er = new ErrorMessage(2);
             er.print();
-        }
-
-        @Override
-        public String toString() {
-            return this.getMessage();
         }
     }
 
-    public class NullDenominatorException extends Exception {
+    public static class NullDenominatorException extends Exception {
         public NullDenominatorException() {
-            ErrorMessage er = new ErrorMessage(3, Language.currentLanguage);
+            ErrorMessage er = new ErrorMessage(3);
             er.print();
-        }
-
-        @Override
-        public String toString() {
-            return this.getMessage();
         }
     }
 
-    public class NullFractionException extends Exception {
+    public static class NullFractionException extends Exception {
         public NullFractionException() {
-            ErrorMessage er = new ErrorMessage(4, Language.currentLanguage);
+            ErrorMessage er = new ErrorMessage(4);
             er.print();
         }
     }
